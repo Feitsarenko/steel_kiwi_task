@@ -1,0 +1,17 @@
+Django>=2.1
+psycopg2>=2.6
+django-allauth>=0.38.0
+django-ipware==2.1.0
+django-tinymce>=2.7
+Pillow>=5.2.0
+django-easycart==0.4.0
+django-filter>=2.0.0
+django-debug-toolbar==1.10.1
+python>=3.6
+factory_boy>=2.11
+Faker>=1.0.0
+stripe==2.17.0
+requests==2.20.1
+gunicorn==19.9.0
+
+

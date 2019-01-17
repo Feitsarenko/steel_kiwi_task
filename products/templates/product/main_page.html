@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Popular Products</h1>
+<div class="category_list">
+    {% if popular_products %}
+    <ul class="row">
+        {% for product in popular_products %}
+            <li class="col-lg-3 col-md-4 col-sm-6 col-xs-12"><a href="{% url 'product_details' product.category.slug product.slug%}">{{product.name}}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>Empty</p>
+    {% endif %}
+</div>
+<div class="choose_week">
+    <h1>Choice of the week</h1>
+    <table>
+        <thead>
+            <tr>
+                <td class="offices-list">Base</td>
+                <td class="offices-list">Standard</td>
+                <td class="offices-list">Premium</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="offices-list">{{choice_week.base}}</td>
+                <td class="offices-list">{{choice_week.standard}}</td>
+                <td class="offices-list">{{choice_week.premium}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="visit_week">
+    <h1>Visits of the week</h1>
+    <table>
+        <thead>
+            <tr>
+                <td class="offices-list">Monday</td>
+                <td class="offices-list">Tuesday</td>
+                <td class="offices-list">Wednesday</td>
+                <td class="offices-list">Thursday</td>
+                <td class="offices-list">Friday</td>
+                <td class="offices-list">Saturday</td>
+                <td class="offices-list">Sunday</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="offices-list">{{count_visit_on_day.monday}}</td>
+                <td class="offices-list">{{count_visit_on_day.tuesday}}</td>
+                <td class="offices-list">{{count_visit_on_day.wednesday}}</td>
+                <td class="offices-list">{{count_visit_on_day.thursday}}</td>
+                <td class="offices-list">{{count_visit_on_day.friday}}</td>
+                <td class="offices-list">{{count_visit_on_day.saturday}}</td>
+                <td class="offices-list">{{count_visit_on_day.sunday}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+</div>
+{% endblock %}

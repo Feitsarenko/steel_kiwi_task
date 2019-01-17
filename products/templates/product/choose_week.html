@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>List of products</h1>
+<div class="product_list">
+    {% if products %}
+    <ul class="row">
+        {% for product in products %}
+        <li class="col-lg-3 col-md-4 col-sm-6 col-xs-12"><a href="{% url 'product_details' product.category.slug product.slug%}">{{ product.name }}</a></li>
+        {% endfor %}
+    </ul>
+        {%if is_paginated%}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+                    {% endif %}
+
+                    <span class="current">
+                    Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% endif %}
+    {% else %}
+        <p>Empty</p>
+    {% endif %}
+</div>
+{% endblock content%}

@@ -1,0 +1,16 @@
+<h1>NEW ARRIVALS</h1>
+{% if products %}
+<div class="product_list">
+    <ul class="row">
+        {% for product in products %}
+        <li class="col-lg-3 col-md-4 col-sm-6 col-xs-12"><a href="{% url 'product_details' product.category.slug product.slug%}">name {{product.name}}---price{{product.price}}---({{product.count_likes}})</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>Empty</p>
+    {% endif %}
+</div>
+
+
+
+

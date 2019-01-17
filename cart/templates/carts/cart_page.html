@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}
+
+{% endblock %}
+{% block content %}
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+<div class="cart">
+
+    <table>
+        <thead>
+            <tr>
+                <td class="offices-list">Name</td>
+                <td class="offices-list">Quantity</td>
+                <td class="offices-list">Price</td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in cart.list_items %}
+            <tr>
+                <td class="offices-list">{{ item.obj.name }}</td>
+                <td class="offices-list">{{ item.quantity }}</td>
+                <form>
+                    <td class="offices-list">
+                        {{ item.total }}
+                    </td>
+                </form>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p> TOTAL PRICE {{ cart.total_price }}</p>
+</div>
+<div class="button-empty" >
+    <form method="post">{%csrf_token%}
+        <a class="empty" onclick="Empty()" > Empty cart </a>
+    </form>
+</div>
+<div class="stripe">
+    <form action="{% url 'charge' %}" method="post">
+    {% csrf_token %}
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="{{ key }}"
+            data-description="A Django Charge"
+            data-locale="auto">
+        </script>
+        <!--data-amount="{{cart.total_price}}"-->
+    </form>
+</div>
+<script>
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+function csrfSafeMethod(method) {
+
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+</script>
+<script>
+
+function Empty() {
+      $.post("http://localhost:8000"+URLS.emptyCart, 'json')
+    }
+</script>
+{%endblock%}

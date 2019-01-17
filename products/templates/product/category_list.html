@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>List of categories</h1>
+
+<div class="category_list">
+    {% if categories %}
+    <ul class="row">
+        {% for category in categories %}
+        <li class="col-lg-3 col-md-4 col-sm-6 col-xs-12"><a href="{% url 'category_page' category.slug %}">{{ category.name}} ({{category.count_products}})</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>Empty</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if category %}
+    <h1>Category {{category.name}}</h1>
+    <h2>Description {{category.description}}</h2>
+{% endif %}
+<div>
+    <form method="get" action="">
+        {{filter.form.as_p}}
+        <input type="submit" value="Go">
+    </form>
+</div>
+{% if filter.qs %}
+<div class="product_list">
+    <ul class="row">
+        {% for product in filter.qs %}
+        <li class="col-lg-3 col-md-4 col-sm-6 col-xs-12"><a href="{% url 'product_details' product.category.slug product.slug%}">name {{product.name}}---price{{product.price}}---({{product.count_likes}})</a></li>
+        {% endfor %}
+    </ul>
+        <div class="pagination">
+            <span class="step-links">
+                {% if contacts.has_previous %}
+                <a href="?page={{ contacts.previous_page_number }}">{{ contacts.previous_page_number }}</a>
+                {% endif %}
+
+                <span class="current">
+                Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ contacts.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <p>Empty</p>
+    {% endif %}
+</div>
+{% endblock content%}

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block title %}
+
+{% endblock %}
+{% block content %}
+
+<div class="product_details" xmlns="http://www.w3.org/1999/html">
+    {% if product.image %}
+        <img src="{{product.image.url}}" width="200" height="150" alt="empty"/>
+    {%else%}
+        <p>have not image</p>
+    {% endif %}
+    <form method="post">{% csrf_token %}
+        <div class="like" onclick="like()">Like {{like_count}}</div>
+    </form>
+    <h3>{{product.name}}</h3>
+    <p class="we1">Description: {{product.description}}</p>
+    <p class="price">Price: {{product.price}}</p>
+
+
+</div>
+<div class="cart">
+    <form method="post">{% csrf_token %}
+        <a class="add_cart" onclick="Add({{product.pk}})"> ADD TO CART  </a>
+    </form>
+</div>
+<div>
+    <h1>New comment</h1>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-primary">Save</button>
+    </form>
+</div>
+<div>
+    <h4>Coments</h4>
+    <table border="1px" width="90%">
+        {%for comment in comments%}
+        <a>
+            {{comment.text}}
+
+        </a>
+
+
+        {% endfor %}
+
+    </table>
+
+
+</div>
+<script>
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+function csrfSafeMethod(method) {
+
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+</script>
+<script>
+
+    function Add(pk, quantity) {
+      quantity = quantity || 1
+      return $.post("http://localhost:8000"+URLS.addItem, {pk: pk, quantity: quantity}, 'json')
+    }
+
+    function like(){
+        var word_l = 'Like'
+
+            $.ajax({
+            url : window.location.href + "/like/",
+            type : 'POST',
+            data : {},
+            success: function (json){
+                if (json.result){
+                    $('.like').text("Like "+json.count)
+                }
+            }
+        })
+
+        }
+
+
+
+</script>
+{% endblock %}
