@@ -10,10 +10,10 @@
         <input type="submit" value="Go">
     </form>
 </div>
-{% if filter.qs %}
+{% if contacts %}
 <div class="product_list">
     <ul class="row">
-        {% for product in filter.qs %}
+        {% for product in contacts %}
         <li class="col-lg-3 col-md-4 col-sm-6 col-xs-12"><a href="{% url 'product_details' product.category.slug product.slug%}">name {{product.name}}---price{{product.price}}---({{product.count_likes}})</a></li>
         {% endfor %}
     </ul>
@@ -27,7 +27,7 @@
                 Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
                 </span>
 
-                {% if page_obj.has_next %}
+                {% if contacts.has_next %}
                     <a href="?page={{ contacts.next_page_number }}">next</a>
                 {% endif %}
             </span>

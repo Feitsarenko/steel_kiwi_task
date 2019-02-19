@@ -19,8 +19,8 @@ class MainView(TemplateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['choice_week'] = Product.objects\
-            .annotate(count_likes=Count('like', Q(like__created_at__gt=timezone.now()-timezone.timedelta(days=7))))\
-            .filter(Q(count_likes__gte=10) & Q(grade='B') | Q(count_likes__gte=5) & Q(grade='S') | Q(grade='P'))\
+            .annotate(count_likes=Count('like', filter=Q(like__created_at__gt=timezone.now()-timezone.timedelta(days=7))))\
+            .filter(Q(count_likes__gte=10, grade='B') | Q(count_likes__gte=5, grade='S') | Q(grade='P'))\
             .aggregate(
                 base=Count('pk', filter=Q(grade='B')),
                 standard=Count('pk', filter=Q(grade='S')),
@@ -145,7 +145,7 @@ class ProductChooseWeekView(ListView):
     def get_queryset(self):
         queryset = Product.objects\
             .annotate(count_likes=Count('like', Q(like__created_at__gt=timezone.now()-timezone.timedelta(days=7))))\
-            .filter(Q(count_likes__gt=10) & Q(grade='B') | Q(count_likes__gt=5) & Q(grade='S') | Q(grade='P'))
+            .filter(Q(count_likes__gt=10, grade='B') | Q(count_likes__gt=5, grade='S') | Q(grade='P'))
         return queryset
 
 
